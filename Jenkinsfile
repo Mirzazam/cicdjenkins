@@ -22,7 +22,7 @@ pipeline{
     stages{
         stage('build'){
             steps {
-                sh 'mvn -s settings.xml -Dskiptests install'
+                sh 'mvn -Dskiptests install'
             }
             post{
                 success{
@@ -33,12 +33,12 @@ pipeline{
         }
         stage('test'){
             steps{
-                sh 'mvn -s settings.xml test'
+                sh 'mvn test'
             }
         }
         stage('checkstyle analysis'){
             steps{
-                sh 'mvn -s settings.xml checkstyle:checkstyle'
+                sh 'mvn checkstyle:checkstyle'
             }
         }
 
