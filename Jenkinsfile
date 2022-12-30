@@ -34,11 +34,11 @@ pipeline{
 
         stage('build && SonarQube analysis') {
             environment {
-                scannerHome = tool 'sonarscanner'
+                scannerHome = tool "${SONARSCANNER}"
             }
             steps {
                 withSonarQubeEnv('sonarserver') { 
-                        sh '''sonarscanner/bin/sonar-scanner -Dsonar.projectkey=vprofile \
+                        sh '''${sonarsHome}/bin/sonar-scanner -Dsonar.projectkey=vprofile \
                         -Dsonar.projectname=vprofile \
                         -Dsonar.sources=src/ \
                         -Dsonar.java.checkstyle.reportsPath=target/checkstyle-result.xml \
