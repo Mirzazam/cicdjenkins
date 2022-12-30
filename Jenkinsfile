@@ -18,21 +18,15 @@ pipeline{
     }
 
     stages{
-        stage(clean){
+        stage('all commands'){
             steps{
                 sh 'mvn clean'
-            }
-        
-        stage ('install'){
-            steps{
-                sh 'mvn clean'
-                sh 'mvn test-compile'
                 sh 'mvn test'
-                sh 'mvn -s settings.xml -DskipTests install'
-                
+                sh ' mvn compile'
+                sh 'mvn test-compile'
+                sh 'mvn -s settings.xml -DskipTest install'
             }
-        }
-            
         }
     }
+
 }
