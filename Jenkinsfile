@@ -51,16 +51,16 @@ pipeline{
             }
          }  
          post {
-    success {
-            echo 'Now Archiving...'
-            archiveArtifacts artifacts: '**/target/*.war'
+            success {
+                echo 'Now Archiving...'
+                archiveArtifacts artifacts: '**/target/*.war'
             }
     } 
          
         
     }
 
-    stage("Quality Gate") {
+    stage("Quality Gate") { 
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
@@ -68,7 +68,27 @@ pipeline{
                     waitForQualityGate abortPipeline: true
                 }
             }
-}   
+    }  
+
+    stage('Uploading Artifact to Nexus Repo') {
+        steps{
+        nexusArtifactUploader(
+        nexusVersion: 'nexus3',
+        protocol: 'http',
+        nexusUrl: '${NEXUSIP}:${NEXUSPORT}',
+        groupId: 'quality check',
+        version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+        repository: '${RELEASE_REPO}',
+        credentialsId: '${NEXUS_LOGIN}',
+        artifacts: [
+            [artifactId: 'vproapp',
+             classifier: '',
+             file: 'target/vprofile-v2.war',
+             type: 'war']
+        ]
+     )
+        }
+    }
     }   
 }
 
