@@ -31,23 +31,13 @@ pipeline{
                 sh 'mvn checkstyle:checkstyle'
             }
         }
+
+        stage('SonarQube analysis') {
+    def scannerHome = tool 'sonarscanner'
+    withSonarQubeEnv('sonarserver') { // If you have configured more than one global server connection, you can specify its name
+      sh "${scannerHome}/bin/sonar-scanner"
     }
-
-    stage("build & SonarQube analysis") {
-          node {
-              withSonarQubeEnv('sonarserver') {
-                 sh 'mvn clean package sonar:sonar'
-              }
-          }
-      }
-
-      stage("Quality Gate"){
-          timeout(time: 1, unit: 'HOURS') {
-              def qg = waitForQualityGate()
-              if (qg.status != 'OK') {
-                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
-              }
-          }
-      }
+  }
+    }
 
 }
