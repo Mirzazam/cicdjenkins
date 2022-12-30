@@ -41,6 +41,7 @@ pipeline{
                         sh '''${sonarsHome}/bin/sonar-scanner -Dsonar.projectkey=vprofile \
                         -Dsonar.projectname=vprofile \
                         -Dsonar.sources=src/ \
+                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
                         -Dsonar.java.checkstyle.reportsPath=target/checkstyle-result.xml \
                         -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                         -Dsonar.junit.reportsPath=target/surefire-reports/ '''
