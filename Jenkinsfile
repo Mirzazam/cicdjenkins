@@ -49,7 +49,14 @@ pipeline{
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
-        }   
+         }  
+         post {
+    success {
+            echo 'Now Archiving...'
+            archiveArtifacts artifacts: '**/target/*.war'
+            }
+    } 
+         
         
     }
 
