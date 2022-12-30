@@ -40,12 +40,11 @@ pipeline{
                 withSonarQubeEnv('sonarserver') {
                         sh 'mvn clean package sonar:sonar'
                         sh 'sonarscanner/bin/sonar-scanner'
-                    }
                 }
             }
         }
-        
     }
+        
+}
     
 
-}
