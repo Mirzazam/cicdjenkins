@@ -32,26 +32,25 @@ pipeline{
             }
         }
 
-        stage('build && SonarQube analysis') {
-            environment {
-                scannerHome = tool "${SONARSCANNER}"
-            }
-            steps {
-                withSonarQubeEnv('sonarserver') { 
-                        sh '''${sonarsHome}/bin/sonar-scanner -Dsonar.projectkey=vprofile \
-                        -Dsonar.projectname=vprofile \
-                        -Dsonar.sources=src/ \
-                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                        -Dsonar.java.checkstyle.reportsPath=target/checkstyle-result.xml \
-                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                        -Dsonar.junit.reportsPath=target/surefire-reports/ '''
-                }
-                        
-                
-            }
-        }
-    }
-        
-}
-    
+        stage('CODE ANALYSIS with SONARQUBE') {
+          
+		  environment {
+             scannerHome = tool 'sonarscanner'
+          }
 
+          steps {
+            withSonarQubeEnv('sonarserver') {
+               sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                   -Dsonar.projectName=vprofile-repo \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+            }
+        }   
+        
+    }   
+    }   
+}
