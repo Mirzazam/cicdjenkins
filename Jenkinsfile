@@ -22,26 +22,14 @@ pipeline{
             steps{
                 sh 'mvn clean'
             }
-        }
-        stage(compile){
-            steps{
-                sh 'mvn compile'
-            }
-            
-        }
-        stage(test){
-            steps{
-                sh 'mvn test'
-            }
-        }
-        stage(package){
-            steps{
-                sh 'mvn package'
-            }
-        }
+        
         stage ('install'){
             steps{
+                sh 'mvn clean'
+                sh 'mvn test-compile'
+                sh 'mvn test'
                 sh 'mvn -s settings.xml -DskipTests install'
+                
             }
             
         }
