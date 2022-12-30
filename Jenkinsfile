@@ -37,10 +37,17 @@ pipeline{
                 scannerHome = tool 'sonarscanner'
             }
             steps {
-                withSonarQubeEnv('sonarserver') {
-                        sh 'mvn clean package sonar:sonar'
-                        sh 'sonarscanner/bin/sonar-scanner'
+                withSonarQubeEnv('sonarserver') { 
+                        sh '''sonarscanner/bin/sonar-scanner -Dsonar.projectkey=vprofile \
+                        -Dsonar.projectname=vprofile \
+                        -Dsonar.sources=src/ \
+                        -Dsonar.java.checkstyle.reportsPath=target/checkstyle-result.xml \
+                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                        -Dsonar.junit.reportsPath=target/surefire-reports/ '''
+                
                 }
+                        
+                
             }
         }
     }
