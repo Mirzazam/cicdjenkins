@@ -30,7 +30,7 @@ pipeline{
                 sh 'mvn clean'
                 sh 'mvn compile'
                 sh ' mvn test-compile'
-                sh 'maven test'
+                sh 'mvn test'
                 sh 'mvn package'
                 sh 'mvn -s settings.xml -DskipTest install'
                 sh 'mvn checkstyle:checkstyle'
