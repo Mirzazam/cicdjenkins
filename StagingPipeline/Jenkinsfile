@@ -109,7 +109,7 @@ pipeline{
     stage("push docker image"){
         steps{
             script{
-                docker.WithRegistry( vprofileRegistry, registryCredential){
+                withDockerRegistry( vprofileRegistry, registryCredential){
                     dockerImage.push("$BUILD_NUMBER")
                     dockerImage.push('latest')
                 }
