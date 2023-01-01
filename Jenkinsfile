@@ -33,7 +33,7 @@ pipeline{
             sh 'mvn test'
             sh 'mvn package'
             sh 'mvn -U clean install'
-            sh 'mvn -s settings.xml  -DskipTest install'
+            sh 'mvn  install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
