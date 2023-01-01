@@ -18,7 +18,7 @@ pipeline{
         RELEASE_REPO= "vpro-release"
         CENTRAL_REPO= "vpro-dependency"
         NEXUS_GRP_REPO= "vpro-group-repo"
-        NEXUSIP= "172.31.16.35"
+        NEXUSIP= "3.91.185.67"
         NEXUSPORT= "8081"
         NEXUS_LOGIN= "nexuslogin"
         SONARTOOL= "sonartool"
@@ -32,7 +32,7 @@ pipeline{
             sh 'mvn test-compile'
             sh 'mvn test'
             sh 'mvn package'
-            sh 'mvn install'
+            sh 'mvn -s settings.xml install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
