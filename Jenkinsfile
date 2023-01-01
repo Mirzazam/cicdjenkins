@@ -27,12 +27,12 @@ pipeline{
     stages{
         stage("Clean,Compile,Compile-test,Test,Install"){
             steps{
-                sh 'mvn clean'
+            sh 'mvn clean'
             sh 'mvn compile'
-            sh 'mvn compile-test'
+            sh 'mvn test-compile'
             sh 'mvn test'
             sh 'mvn package'
-            sh 'mvn -s settings.xml -DskipTest install'
+            sh 'mvn -s settings.xml install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
