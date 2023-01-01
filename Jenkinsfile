@@ -25,7 +25,7 @@ pipeline{
     }
 
     stages{
-        stage("Clean,Compile,Compile-test,Test,Install"){
+        stage("Clean,Compile,Test-compile,Test,Install"){
             steps{
             sh 'mvn clean'
             sh 'mvn compile'
