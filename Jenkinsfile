@@ -18,7 +18,7 @@ pipeline{
         RELEASE_REPO= "vpro-release"
         CENTRAL_REPO= "vpro-dependency"
         NEXUS_GRP_REPO= "vpro-group-repo"
-        NEXUSIP= "3.91.185.67"
+        NEXUSIP= "172.31.16.35"
         NEXUSPORT= "8081"
         NEXUS_LOGIN= "nexuslogin"
         SONARTOOL= "sonartool"
