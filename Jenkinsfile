@@ -42,6 +42,7 @@ pipeline{
                 scannerHome = tool "${SONARTOOL}"
             }
                 steps{
+                    withSonarQubeEnv('sonarserver'){
                     sh ''' "${SONARTOOL}/bin/sonar-scanner -Dsonar.projectkey= vprofile/ \
                     -Dsonar.projectName=vprofile-repo \
                     -Dsonar.projectVersion=1.0 \
@@ -50,6 +51,7 @@ pipeline{
                     -Dsonar.junit.reportsPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec/ \
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
+                }
                 }
 
         }
