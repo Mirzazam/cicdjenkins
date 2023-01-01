@@ -32,7 +32,7 @@ pipeline{
             sh 'mvn test-compile'
             sh 'mvn test'
             sh 'mvn package'
-            sh 'mvn -s settings.xml install'
+            sh 'mvn -s settings.xml  -DskipTest install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
