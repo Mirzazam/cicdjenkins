@@ -1,8 +1,3 @@
-def COLOR_MAP = [
-    'SUCCESS': 'good',
-    'FAILURE': 'danger'
-]
-
 pipeline{
     agent any
 
@@ -18,22 +13,21 @@ pipeline{
         RELEASE_REPO= "vpro-release"
         CENTRAL_REPO= "vpro-dependency"
         NEXUS_GRP_REPO= "vpro-group-repo"
-        NEXUSIP= "172.31.18.208"
+        NEXUSIP= "172.31.16.35"
         NEXUSPORT= "8081"
         NEXUS_LOGIN= "nexuslogin"
         SONARTOOL= "sonartool"
     }
 
     stages{
-        stage("Clean,Compile,Test-compile,Test,Install"){
+        stage("Clean,Compile,Compile-test,Test,Install"){
             steps{
-            sh 'mvn clean'
+                sh 'mvn clean'
             sh 'mvn compile'
-            sh 'mvn test-compile'
+            sh 'mvn compile-test'
             sh 'mvn test'
             sh 'mvn package'
-            sh 'mvn -U clean install'
-            sh 'mvn  -s settings.xml -DskipTests install'
+            sh 'mvn -s settings.xml -DskipTest install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
@@ -42,31 +36,27 @@ pipeline{
             environment{
                 scannerHome = tool "${SONARTOOL}"
             }
-            steps{
-                    withSonarQubeEnv('sonarserver'){
-                    sh ''' "${SONARTOOL}"/bin/sonar-scanner -Dsonar.projectkey= vprofile \
+                steps{
+                    sh ''' "${SONARTOOL}/bin/sonar-scanner -Dsonar.projectkey= vprofile/ \
                     -Dsonar.projectName=vprofile-repo \
                     -Dsonar.projectVersion=1.0 \
                     -Dsonar.sources=src/ \
-                    -Dsonar.Java.binaries=target/test-classes/com/visualpathit/account/ControllerTest/ \
+                    -Dsonar.Java.binaries=target/test-classes/com/visualpathit/accounts/ControllerTest/ \
                     -Dsonar.junit.reportsPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec/ \
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
                 }
-                }
-                post {
-                    success {
-                    echo 'Now Archiving...'
-                    archiveArtifacts artifacts: '**/target/*.war'
-                    }
 
-                }
-
-        stage("Quality gate") {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
         }
+
+        stage("Quality Gate"){
+          timeout(time: 1, unit: 'HOURS') {
+              def qg = waitForQualityGate()
+              if (qg.status != 'OK') {
+                  error "Pipeline aborted due to quality gate failure: ${qg.status}"
+              }
+          }
+    }
 
         stage("Upload Artifact to Nexus repo"){
             steps{
@@ -89,10 +79,7 @@ pipeline{
         }
 
         
-    
-    }
-
-post {
+        post {
         always {
             echo 'Slack Notifications.'
             slackSend channel: '#dev',
@@ -100,9 +87,9 @@ post {
             message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }  
+    }
 
     
-}
 }
 
 
