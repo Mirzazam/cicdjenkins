@@ -17,7 +17,7 @@ pipeline{
         RELEASE_REPO = "vprofile-release"
         CENTRAL_REPO = "vpro-maven-central"
         NEXUS_GRP_REPO = "vpro-maven-group"
-        NEXUSIP = "172.31.22.12"
+        NEXUSIP = "172.31.18.208"
         NEXUSPORT = "8081"
         NEXUS_LOGIN = "nexuslogin"
         SONARSERVER = 'sonarserver'
