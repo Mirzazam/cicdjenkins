@@ -54,6 +54,7 @@ pipeline{
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
                 }
                 }
+        }
                 post {
                     success {
                     echo 'Now Archiving...'
@@ -92,11 +93,6 @@ pipeline{
     
     }
 
-  
-
-    
-}
-
 post {
         always {
             echo 'Slack Notifications.'
@@ -105,7 +101,10 @@ post {
             message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
     }
+    
 }
+
+
 
 
 
