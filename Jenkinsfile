@@ -54,10 +54,10 @@ pipeline{
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
                 }
                 }
-                post {
-                success {
-                echo 'Now Archiving...'
-                archiveArtifacts artifacts: '**/target/*.war'
+        post {
+            success {
+            echo 'Now Archiving...'
+            archiveArtifacts artifacts: '**/target/*.war'
             }
 
         }
