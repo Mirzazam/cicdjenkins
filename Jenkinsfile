@@ -18,7 +18,7 @@ pipeline{
         RELEASE_REPO= "vpro-release"
         CENTRAL_REPO= "vpro-dependency"
         NEXUS_GRP_REPO= "vpro-group-repo"
-        NEXUSIP= "172.31.16.35"
+        NEXUSIP= "172.31.18.208"
         NEXUSPORT= "8081"
         NEXUS_LOGIN= "nexuslogin"
         SONARTOOL= "sonartool"
@@ -33,7 +33,7 @@ pipeline{
             sh 'mvn test'
             sh 'mvn package'
             sh 'mvn -U clean install'
-            sh 'mvn  install'
+            sh 'mvn  -s settings.xml -DskipTests install'
             sh 'mvn checkstyle:checkstyle'
             }
         }
@@ -44,16 +44,21 @@ pipeline{
             }
                 steps{
                     withSonarQubeEnv('sonarserver'){
-                    sh ''' "${SONARTOOL}"/bin/sonar-scanner -Dsonar.projectkey= vprofile/ \
+                    sh ''' "${SONARTOOL}"/bin/sonar-scanner -Dsonar.projectkey= vprofile \
                     -Dsonar.projectName=vprofile-repo \
                     -Dsonar.projectVersion=1.0 \
                     -Dsonar.sources=src/ \
-                    -Dsonar.Java.binaries=target/test-classes/com/visualpathit/accounts/ControllerTest/ \
+                    -Dsonar.Java.binaries=target/test-classes/com/visualpathit/account/ControllerTest/ \
                     -Dsonar.junit.reportsPath=target/surefire-reports/ \
                     -Dsonar.jacoco.reportsPath=target/jacoco.exec/ \
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
                 }
                 }
+                post {
+                success {
+                echo 'Now Archiving...'
+                archiveArtifacts artifacts: '**/target/*.war'
+            }
 
         }
 
@@ -97,6 +102,7 @@ post {
     }  
 
     
+}
 }
 
 
