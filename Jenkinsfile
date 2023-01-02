@@ -54,7 +54,7 @@ pipeline{
                     -Dsonar.java.checkstyle.reportsPaths=target/checkstyle-result.xml'''                
                 }
                 }
-        }
+        
                 post {
                     success {
                     echo 'Now Archiving...'
@@ -62,6 +62,7 @@ pipeline{
                     }
 
                 }
+        }
 
         stage("Quality gate") {
             steps {
@@ -106,7 +107,4 @@ post {
 
 
 
-
-
-
-
+        
